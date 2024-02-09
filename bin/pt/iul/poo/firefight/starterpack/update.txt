@@ -1,0 +1,52 @@
+public void update(Observed source) {
+
+		int lastKeyTyped = gui.keyPressed();
+		
+		if(allFiresGone())
+			level.levelUp();
+
+		if(Direction.isDirection(lastKeyTyped)){
+			
+			Direction direction = Direction.directionFor(lastKeyTyped);
+			
+			
+			
+			if(fireman.isActive()){
+				fireman.move(direction);
+			}
+			
+			if(!fireman.isActive() && lastKeyPressed == KeyEvent.VK_ENTER){
+				fireman.setPosition(bulldozer.getPosition());
+				fireman.setActive(true);
+				updateActive();
+			}
+			
+			else if(fireman.isActive() && fireman.getPosition().equals(bulldozer.getPosition())){
+				fireman.move(direction);
+				fireman.setActive(false);
+				updateActive();
+			}
+
+			else if(!fireman.isActive()){
+				bulldozer.mudarDirecao(direction);
+				gui.update();
+				bulldozer.move(direction);
+			}
+
+			
+			if(lastKeyPressed == KeyEvent.VK_P){
+				plane.setPosition((new Point2D(colunaComMaisFogos(),9)));
+				plane.setActive(true);
+				updateActive();
+				fireman.RemoverFogo(plane.getPosition());
+			}
+			
+			if(getPlane().isActive())
+				getPlane().move();
+			
+		}
+		gui.update();
+		lastKeyPressed=lastKeyTyped;
+	}
+	
+	player = JOptionPane.showInputDialog("Insira o seu nome: ");
